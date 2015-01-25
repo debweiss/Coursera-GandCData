@@ -1,0 +1,64 @@
+---
+title: "README"
+author: "Debra Cooperman"
+date: "January 24, 2015"
+output: html_document
+---
+
+### Approach to run_analysis script
+
+The goal of the run_analysis script was to take two sets of data (training and test),  
+clean them up, and merge them to create a unified set of data that contained  
+descriptive variable names, descriptive activity names, and was subsetted to create  
+the average of each mean and std variables by subject and activity. 
+
+To do this, first I loaded the dplyr library, as I knew I would be using that  
+to manipulate the data.  
+
+Then I read in each of the needed .txt files, which included the subject ids  
+for the training and test sets, the labels for the activities, the feature  
+names for the rest of the variables, and the actual data for those variables.  
+
+Then for each of the training and test files, I used colnames to change  
+the column headers to the descriptive names "Subject" and "Activity".  
+What I then had was four different data tables: 2 that listed the training  
+subjects and test subjects, respectively, and 2 that listed the training  
+activities and test activities, respectively.  
+
+I then stored all the feature names in a vector, and used the make.names  
+function to ensure that the feature names would all be R compliant.  
+I then used the that vector to name the columns in the X_train and X_test files,  
+yielding descriptive variable names across both sets (Criterion #4 of 5 for the  
+assignment)  
+
+I then clipped the data together using cbind, first for test, then for train.  
+This created a combined_test_data data table that had the Subject and Activity columns  
+in addition to the other variables, and a combined_train_data data table that had  
+exactly the same number of columns, with the exact same names, making things much  
+cleaner for the merge.  
+
+I then replaced the activity numbers in each data set with their respective activity  
+names, thus fulfilling Criterion #3 out of 5 for the assignment.  
+
+Then for train and test respectively, I selected only the columns Subject, Activity, plus    
+any column that contained the word "M/mean" or "std", thus fulfilling Criterion #2 for the  
+assignment.  
+
+Now since each data set had exactly the same number and names of columns, I used the merge  
+function to merge them cleanly, thus fulfilling Criterion # 1 for the assignment.  
+
+I then took the combined data set and used group_by to group by Subject then Activity.  
+
+I tooked the grouped data set and then used the summarise_each function to get the mean  
+of each of the columns by group, which satisfies criterion #5 of the assignment.  
+
+The last step was to write the tidy data set out to a text file using write.table.  
+
+As you can see from above, my script satisfies all 5 criteria for the assignment:  
+1. The training and test sets are merged.  
+2. I extracted only the measurements of mean and standard deviation for each measurement    
+(using contains("Mean", "mean", "std"))  
+3. I used descriptive activity names to name the activities in the data set (e.g., "Standing")  
+4. I labeled the data set with descriptive variable names for each of the columns  
+5. From my data set in step 4, I created a second, independent tidy data set with the average   
+of each variable for each activity and each subject.  
